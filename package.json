@@ -1,0 +1,17 @@
+{
+  "name": "auto-campnet",
+  "version": "0.0.1",
+  "description": "Automatically connect to BPGC campnet",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Hrishikesh Patil <hrishikeshpatil.754@gmail.com> (https://riskycase.netlify.app/)",
+  "license": "MIT",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "typescript": "^4.6.2",
+    "@types/node": "^17.0.21"
+  }
+}
