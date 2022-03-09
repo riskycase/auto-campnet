@@ -1,5 +1,6 @@
-import { get } from 'https';
+import { get, request, RequestOptions } from 'https';
 import { networkInterfaces } from 'os';
+import { stringify } from 'querystring';
 
 interface network {
     name: string,
@@ -18,6 +19,44 @@ function checkCampnetSite(): Promise<boolean> {
     });
 }
 
+function loginCampnet() {
+    const parameters = {
+        mode: 191,
+        username: 'username',
+        password: 'password',
+        a: Date.now(),
+        producttype: 0
+    }
+
+    const options: RequestOptions = {
+        hostname: 'campnet.bits-goa.ac.in',
+        port: "8090",
+        path: '/login.xml',
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Content-Length': stringify(parameters).length
+        }
+    }
+
+    const req = request(options, (response) => {
+        let chunks = [];
+        response.on('data', fragments => chunks.push(fragments));
+        response.on('end', () => {
+            const responseString = Buffer.concat(chunks).toString();
+            
+            if(/CDATA\[LIVE\]/.test(responseString))
+                console.log("Logged in");
+            else
+                console.log("Username error")
+        })
+        response.on('error', err => console.error(err));
+    })
+    req.on('error', err => console.error(err));
+    req.write(stringify(parameters));
+    req.end();
+}
+
 function interfaceUpdater() {
     let newNetworks: Array<network> = [];
     const ni = networkInterfaces();
@@ -32,7 +71,9 @@ function interfaceUpdater() {
     newNetworks.sort((network1, network2) => network1.name.localeCompare(network2.name));
     if(newNetworks.toString().localeCompare(networks.toString()) !== 0){
         networks = newNetworks;
-        checkCampnetSite().then(result => console.log(result));
+        checkCampnetSite().then(result => {
+            if(result) loginCampnet();
+        });
     }
     setTimeout(interfaceUpdater, 500);
 }
