@@ -2,6 +2,9 @@ import { get, request, RequestOptions } from 'https';
 import { networkInterfaces } from 'os';
 import { stringify } from 'querystring';
 
+import { config } from 'dotenv';
+
+config();
 interface network {
     name: string,
     ip: string
@@ -22,8 +25,8 @@ function checkCampnetSite(): Promise<boolean> {
 function loginCampnet() {
     const parameters = {
         mode: 191,
-        username: 'username',
-        password: 'password',
+        username: process.env.CAMPNET_USERNAME,
+        password: process.env.CAMPNET_PASSWORD,
         a: Date.now(),
         producttype: 0
     }
