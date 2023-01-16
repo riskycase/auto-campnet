@@ -9,6 +9,7 @@
   "author": "Hrishikesh Patil <hrishikeshpatil.754@gmail.com> (https://riskycase.netlify.app/)",
   "license": "MIT",
   "dependencies": {
+    "axios": "^0.27.2",
     "dotenv": "^16.0.3"
   },
   "devDependencies": {
