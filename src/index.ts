@@ -3,6 +3,7 @@ import { networkInterfaces } from 'os';
 import { stringify } from 'querystring';
 
 import { config } from 'dotenv';
+import { remainingData } from './remaining';
 
 config();
 interface network {
@@ -81,4 +82,5 @@ function interfaceUpdater() {
     setTimeout(interfaceUpdater, 500);
 }
 
+setInterval(remainingData, Number(process.env.REMAINING_DATA_CHECK_INTERVAL || 30000));
 interfaceUpdater();
